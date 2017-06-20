@@ -6,9 +6,7 @@ STATUS_MESSAGES = ['My name is Bond, James Bond', 'Shaken, not stirred.', 'Keepi
 
 print "Hello! Let's get started"
 
-question = "Do you want to continue as " + spy.salutation + " " + spy.name + " (Y/N)? "
-existing = raw_input(question)
-
+existing = raw_input("Do you want to continue as " + spy.salutation + " " + spy.name + " (Y/N)? ")
 
 def add_status():
 
@@ -127,8 +125,6 @@ def read_chat_history():
 
     read_for = select_a_friend()
 
-    print '\n6'
-
     for chat in friends[read_for].chats:
         if chat.sent_by_me:
             print '[%s] %s: %s' % (chat.time.strftime("%d %B %Y"), 'You said:', chat.message)
@@ -170,7 +166,7 @@ def start_chat(spy):
     else:
         print 'Sorry you are not of the correct age to be a spy'
 
-if existing == "Y":
+if existing.upper() == "Y":
     start_chat(spy)
 else:
 
