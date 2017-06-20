@@ -8,6 +8,7 @@ print "Hello! Let's get started"
 
 existing = raw_input("Do you want to continue as " + spy.salutation + " " + spy.name + " (Y/N)? ")
 
+
 def add_status():
 
     updated_status_message = None
@@ -131,7 +132,6 @@ def read_chat_history():
         else:
             print '[%s] %s said: %s' % (chat.time.strftime("%d %B %Y"), friends[read_for].name, chat.message)
 
-
 def start_chat(spy):
 
     spy.name = spy.salutation + " " + spy.name
@@ -167,11 +167,15 @@ def start_chat(spy):
         print 'Sorry you are not of the correct age to be a spy'
 
 if existing.upper() == "Y":
-    start_chat(spy)
+    spy_enter = raw_input("Enter password. ")
+    if spy_enter == "vesper":
+        print "Welcome"
+        start_chat(spy)
+    else:
+        print "Invalid Password. Please restart and try again."
 else:
 
     spy = Spy('','',0,0.0)
-
 
     spy.name = raw_input("Welcome to spy chat, you must tell me your spy name first: ")
 
