@@ -110,9 +110,12 @@ def send_message(): #
     new_chat = ChatMessage(text,True) #this has our message
 
     if text == "SOS" or "SAVE ME":
-        print "Don,t worry, Help comming."
+        print "Don,t worry, Help's comming."
     elif text == "ENJOYING":
         print "Don't enjoy, Work."
+    elif text = None
+        print "Nothing recieved, send again."
+
     friends[friend_choice].chats.append(new_chat) #adds the message for the friend selected
 
     print "Your secret message image is ready!"
