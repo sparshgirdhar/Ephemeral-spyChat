@@ -1,15 +1,19 @@
-from spy_details import spy, Spy, ChatMessage, friends
-from steganography.steganography import Steganography
-from datetime import datetime
+from spy_details import spy, Spy, ChatMessage, friends #imporing classes to use pre-defined variables
+from steganography.steganography import Steganography #used to send and recieve messages between spies
+from datetime import datetime #used to provide datestamp
 
-STATUS_MESSAGES = ['My name is Bond, James Bond', 'Shaken, not stirred.', 'Keeping the British end up, Sir']
+from termcolor import * 
+import colorama
+colorama.init()
+
+STATUS_MESSAGES = ['My name is Bond, James Bond', 'Last rat standing', 'I stop when I am Done.']
 
 print "Hello! Let's get started"
 
 existing = raw_input("Do you want to continue as " + spy.salutation + " " + spy.name + " (Y/N)? ")
 
 
-def add_status():
+def add_status(): #function created to add status, def is the keyword to define a function
 
     updated_status_message = None
 
@@ -26,7 +30,7 @@ def add_status():
 
 
         if len(new_status_message) > 0:
-            STATUS_MESSAGES.append(new_status_message)
+            STATUS_MESSAGES.append(new_status_message) #append() will add the new status
             updated_status_message = new_status_message
 
     elif default.upper() == 'Y':
@@ -34,10 +38,10 @@ def add_status():
         item_position = 1
 
         for message in STATUS_MESSAGES:
-            print '%d. %s' % (item_position, message)
+            print '%d. %s' % (item_position, message) #displays status in 1 My name is Bond, James Bond format to help us select
             item_position = item_position + 1
 
-        message_selection = int(raw_input("\nChoose from the above messages "))
+        message_selection = int(raw_input("\nChoose from the above messages ")) #stores the selection
 
 
         if len(STATUS_MESSAGES) >= message_selection:
@@ -51,10 +55,10 @@ def add_status():
     else:
         print 'You current don\'t have a status update'
 
-    return updated_status_message
+    return updated_status_message #function will return the value stored in this variable when called
 
 
-def add_friend():
+def add_friend(): #to add new friend
 
     new_friend = Spy('','',0,0.0)
 
@@ -75,10 +79,10 @@ def add_friend():
     else:
         print 'Sorry! Invalid entry. We can\'t add spy with the details you provided'
 
-    return len(friends)
+    return len(friends) #retuens the number of friends we have
 
 
-def select_a_friend():
+def select_a_friend(): #selects the friend from the list
     item_number = 0
 
     for friend in friends:
@@ -91,21 +95,21 @@ def select_a_friend():
 
     friend_choice_position = int(friend_choice) - 1
 
-    return friend_choice_position
+    return friend_choice_position #returns the position in the list
 
 
-def send_message():
+def send_message(): #
 
     friend_choice = select_a_friend()
 
-    src ="input.jpg"
-    dest = "output.jpg"
-    text = raw_input("What do you want to say? ")
-    Steganography.encode(src, dest, text)
+    src ="input.jpg" #original path
+    dest = "output.jpg" #output path
+    text = raw_input("What do you want to say? ") #our message
+    Steganography.encode(src, dest, text) #encode is inbuilt in steganography in hide the message
 
-    new_chat = ChatMessage(text,True)
+    new_chat = ChatMessage(text,True) #this has our message
 
-    friends[friend_choice].chats.append(new_chat)
+    friends[friend_choice].chats.append(new_chat) #adds the message for the friend selected
 
     print "Your secret message image is ready!"
 
@@ -114,7 +118,7 @@ def read_message():
 
     sender = select_a_friend()
     output_path = raw_input("What is the name of the file?")
-    secret_text = Steganography.decode(output_path)
+    secret_text = Steganography.decode(output_path) #decode is inbuilt in steganography to decode the hidden message
 
     new_chat = ChatMessage(secret_text,False)
     friends[sender].chats.append(new_chat)
@@ -122,17 +126,23 @@ def read_message():
     print "Your secret message has been saved!"
 
 
-def read_chat_history():
+def read_chat_history(): #this function will helps us see the messages send along with the date and time
 
     read_for = select_a_friend()
 
     for chat in friends[read_for].chats:
-        if chat.sent_by_me:
-            print '[%s] %s: %s' % (chat.time.strftime("%d %B %Y"), 'You said:', chat.message)
-        else:
-            print '[%s] %s said: %s' % (chat.time.strftime("%d %B %Y"), friends[read_for].name, chat.message)
+        cprint('[%s]' % chat.time.strftime("%d %B %Y"), 'blue')
+        cprint('%s' % 'you said:', 'red')
+        print '%s' % chat.message
 
-def start_chat(spy):
+
+    else:
+        cprint('[%s]' % chat.time.strftime("%d %B %Y"), 'blue')
+        cprint('%s said :' % friends[read_for].name, 'red')
+        print '%s' % chat.message
+
+
+def start_chat(spy): #this is the main function which will give us menu of choices to select , and call different functions created before
 
     spy.name = spy.salutation + " " + spy.name
 
@@ -167,13 +177,14 @@ def start_chat(spy):
         print 'Sorry you are not of the correct age to be a spy'
 
 if existing.upper() == "Y":
-    spy_enter = raw_input("Enter password. ")
+    spy_enter = raw_input("Enter password. ") #password protected
     if spy_enter == "vesper":
         print "Welcome"
         start_chat(spy)
     else:
         print "Invalid Password. Please restart and try again."
-else:
+
+else: #if we want to enter as a different user
 
     spy = Spy('','',0,0.0)
 
