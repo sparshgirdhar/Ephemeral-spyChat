@@ -2,7 +2,7 @@ from spy_details import spy, Spy, ChatMessage, friends #imporing classes to use 
 from steganography.steganography import Steganography #used to send and recieve messages between spies
 from datetime import datetime #used to provide datestamp
 
-from termcolor import * 
+from termcolor import *
 import colorama
 colorama.init()
 
@@ -109,6 +109,10 @@ def send_message(): #
 
     new_chat = ChatMessage(text,True) #this has our message
 
+    if text == "SOS" or "SAVE ME":
+        print "Don,t worry, Help comming."
+    elif text == "ENJOYING":
+        print "Don't enjoy, Work."
     friends[friend_choice].chats.append(new_chat) #adds the message for the friend selected
 
     print "Your secret message image is ready!"
@@ -134,7 +138,6 @@ def read_chat_history(): #this function will helps us see the messages send alon
         cprint('[%s]' % chat.time.strftime("%d %B %Y"), 'blue')
         cprint('%s' % 'you said:', 'red')
         print '%s' % chat.message
-
 
     else:
         cprint('[%s]' % chat.time.strftime("%d %B %Y"), 'blue')
@@ -178,7 +181,7 @@ def start_chat(spy): #this is the main function which will give us menu of choic
 
 if existing.upper() == "Y":
     spy_enter = raw_input("Enter password. ") #password protected
-    if spy_enter == "vesper":
+    if spy_enter == "vesper": #this is the password,
         print "Welcome"
         start_chat(spy)
     else:
