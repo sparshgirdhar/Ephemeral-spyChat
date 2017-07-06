@@ -130,6 +130,8 @@ def read_message():
         print "DON'T WORRY! BACK UP TEAM WILL REACH SOON"
     elif secret_text == 'SOS':
         print "SAVE OUR SOULS"
+    elif len(secret_text) == 0:
+        print "Nothing recieved, send again."
     else:
         print secret_text
 
