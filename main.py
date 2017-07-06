@@ -1,8 +1,8 @@
 from spy_details import spy, Spy, ChatMessage, friends #imporing classes to use pre-defined variables
-from steganography.steganography import Steganography #used to send and recieve messages between spies
+from steganography.steganography import Steganography #used to send and receive messages between spies
 from datetime import datetime #used to provide datestamp
 
-from termcolor import *
+from termcolor import*
 import colorama
 colorama.init()
 
@@ -73,9 +73,10 @@ def add_friend(): #to add new friend
     new_friend.rating = raw_input("Spy rating?")
     new_friend.rating = float(new_friend.rating)
 
-    if len(new_friend.name) > 0 and new_friend.age > 12 and new_friend.rating >= spy.rating:
+    if len(new_friend.name) > 0 and new_friend.age > 12 and new_friend.rating >= 4:
         friends.append(new_friend)
-        print 'Friend Added!'
+        print  new_friend.name + " of age: " \
+              + str(new_friend.age) + " and rating of: " + str(new_friend.rating) + " added as your friend!"
     else:
         print 'Sorry! Invalid entry. We can\'t add spy with the details you provided'
 
@@ -104,17 +105,10 @@ def send_message(): #
 
     src ="input.jpg" #original path
     dest = "output.jpg" #output path
-    text = raw_input("What do you want to say? ") #our message
-    Steganography.encode(src, dest, text) #encode is inbuilt in steganography in hide the message
+    text = raw_input("What do you want to say? ") #our messagey
+    Steganography.encode(src, dest, text) #encode is inbuilt in steganography to hide the message
 
     new_chat = ChatMessage(text,True) #this has our message
-
-    if text == "SOS" or "SAVE ME":
-        print "Don,t worry, Help's comming."
-    elif text == "ENJOYING":
-        print "Don't enjoy, Work."
-    elif text = None
-        print "Nothing recieved, send again."
 
     friends[friend_choice].chats.append(new_chat) #adds the message for the friend selected
 
@@ -127,10 +121,17 @@ def read_message():
     output_path = raw_input("What is the name of the file?")
     secret_text = Steganography.decode(output_path) #decode is inbuilt in steganography to decode the hidden message
 
-    new_chat = ChatMessage(secret_text,False)
+    new_chat = ChatMessage(secret_text, False)
     friends[sender].chats.append(new_chat)
 
-    print "Your secret message has been saved!"
+    if secret_text == 'BRB':
+        print "BE RIGHT BACK!!!"
+    elif secret_text == 'SAVE ME':
+        print "DON'T WORRY! BACK UP TEAM WILL REACH SOON"
+    elif secret_text == 'SOS':
+        print "SAVE OUR SOULS"
+    else:
+        print secret_text
 
 
 def read_chat_history(): #this function will helps us see the messages send along with the date and time
@@ -138,14 +139,16 @@ def read_chat_history(): #this function will helps us see the messages send alon
     read_for = select_a_friend()
 
     for chat in friends[read_for].chats:
-        cprint('[%s]' % chat.time.strftime("%d %B %Y"), 'blue')
-        cprint('%s' % 'you said:', 'red')
-        print '%s' % chat.message
+        if chat.sent_by_me:
 
-    else:
-        cprint('[%s]' % chat.time.strftime("%d %B %Y"), 'blue')
-        cprint('%s said :' % friends[read_for].name, 'red')
-        print '%s' % chat.message
+            cprint('[%s]' % chat.time.strftime("%d %B %Y"), 'blue') #strftime function is used for the timestamp associated with each chat
+            cprint('%s' % 'you said:', 'red')
+            print '%s' % chat.message
+
+        else:
+            cprint('[%s]' % chat.time.strftime("%d %B %Y"), 'blue')
+            cprint('%s said :' % friends[read_for].name, 'red')
+            print '%s' % chat.message
 
 
 def start_chat(spy): #this is the main function which will give us menu of choices to select , and call different functions created before
